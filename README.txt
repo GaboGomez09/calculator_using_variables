@@ -10,6 +10,6 @@ Requirements:
     + Whole numbers with or without minus symbol. Example (5, 34, -100)
     + Decimal numbers with or without minus symbol. Example (.05, 0.51, -13.1)
     + Variables (with the same REGEX used in past assignment)
-    + Math operators (=,+, -, *, /, % y ^)
+    + Math operators (=,+, -, *, /, % and ^)
     + Strings ("Everything between double apostrophes")
     + End of expression symbol (;)
