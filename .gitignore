@@ -1,6 +1,7 @@
 # Prerequisites
 *.d
 *.c
+*.tab.h
 
 # Object files
 *.o
