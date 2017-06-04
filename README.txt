@@ -1,6 +1,6 @@
 Design and implementation of a calculator with the capability of using variables.
 
-Using FLEX, BISON and a Symbol Table written in C.
+Using FLEX 2.6.0, BISON 3.0.4 and a Symbol Table written in C.
 
 Class: Compilers
 
