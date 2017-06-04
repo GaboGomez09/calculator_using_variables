@@ -23,21 +23,25 @@ char* cadenaSinComillas(char* cadena){
 WholeNumber -?[0-9]+
 DecimalNumber -?[0-9]+"."[0-9]+
 Variable _?[a-zA-Z][a-zA-Z0-9_]*
-String \"[a-zA-Z]+\"
+String \"[,.?¿!¡_:0-9a-zA-Z ]+\"
 EOE ;
-%%
 
+
+/*************************Rule definitions********************/
+
+%%
 {WholeNumber}           {
     		          printf("\tWhole number %s\n",yytext);
                   //yylval.entero = atoi(yytext);
                   //return (ENTERO);
                         }
 
-{DecimalNumber}           {
+{DecimalNumber}          {
 		printf("\tDecimal Number %s\n",yytext);
 							//yylval.real = atof(yytext);
 							//return (REAL);
               	}
+                
 {Variable}			{
 		printf("\tVariable %s\n",yytext);
 								//yylval.text = yytext;
