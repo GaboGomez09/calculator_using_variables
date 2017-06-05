@@ -71,6 +71,11 @@ String \"[,.?¿!¡_:0-9a-zA-Z ]+\"
 							return (STRING);
 								}
 
+"="	 	{
+		printf("\tSigno igual\n");
+                return (yytext[0]);
+                }
+
 "+"	 	{
 		printf("\tSigno mas\n");
                 return (yytext[0]);

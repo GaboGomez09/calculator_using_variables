@@ -30,9 +30,8 @@
 /**********************************************************************/
 /*********************Declaration of Non-Terminals*********************/
 /**********************************************************************/
-%type <whole> DCLRW
-%type <decimal> DCLRD
-%type <string> DCLRS
+%type <string> INIT
+%type <string> DCLR
 %type <whole> expENT
 %type <decimal> expRE
 %type <string> expTXT
@@ -53,17 +52,19 @@ line:     '\n'
         | expENT '\n'  { printf ("\t\tresultado: %d\n", $1); }
         | expRE '\n'  { printf ("\t\tresultado: %f\n", $1); }
         | expTXT '\n'  { printf ("\t\tresultado: %s\n", $1); }
-        | DCLRW '\n'  {}
-        | DCLRD '\n' {}
-        | DCLRS '\n'  {}
+        | INIT  '\n'  {}
+        | DCLR  '\n'  {}
 ;
 
-DCLRS: STR VARIABLE ';' {printf("\tThis is a DCLRS\n");}
+INIT: INT VARIABLE '=' WHOLE ';' {}
+    | DOUBLE VARIABLE '=' DECIMAL ';'{}
+    | STR VARIABLE '=' STRING ';' {}
 ;
 
-DCLRD: DOUBLE VARIABLE ';'{printf("\tthis is a DCLRD\n");}
-;
-DCLRW:  INT VARIABLE ';' {printf("\tthis is a declaration\n");}
+
+DCLR: INT VARIABLE ';' {printf("\tthis is a declaration \n");}
+    | DOUBLE VARIABLE ';' {}
+    | STR VARIABLE ';' {}
 ;
 
 expENT:     WHOLE	{ $$ = $1; }
