@@ -4,6 +4,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+// #include "symbol_table.h"
+
+// char* first_substring(char* string){
+//
+// }
+//
+// void save_variable(first_substring(name($2)) ,int type,union value value){
+//
+// }
+
 
 char* subtract_string(char* string1, char* string2)
 {

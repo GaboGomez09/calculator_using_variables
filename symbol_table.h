@@ -1,8 +1,6 @@
 #ifndef symbol_table
 #define symbol_table
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
 
 typedef struct tuple{
     char* name;

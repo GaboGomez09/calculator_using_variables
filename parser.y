@@ -6,6 +6,9 @@
 /**********************************************************************/
 %{
 #include "parser.h"
+Symbol_Table symbol_table = (Symbol_Table*)malloc(sizeof(Symbol_Table));
+symbol_table->next = NULL;
+symbol_table->length = 0;
 %}
 
 /**********************************************************************/
@@ -46,7 +49,7 @@
 %%
 
 input:    /* empty string */
-        | input line
+        | input line {printf("this did something");}
 ;
 
 line:     '\n'
@@ -69,7 +72,9 @@ INIT: INT VARIABLE '=' WHOLEXPR ';' {}
 ;
 
 
-DCLR: INT VARIABLE ';' {printf("\tthis is a declaration \n");}
+DCLR: INT VARIABLE ';' {}//union value value;
+                        //value.ivalue = 0;
+          //save_variable(first_substring(name($2)) ,type(1),value);}
     | DOUBLE VARIABLE ';' {}
     | STR VARIABLE ';' {}
 ;
@@ -114,6 +119,7 @@ STREXPR:     STRING	{ $$ = (char*)malloc(strlen($1));strcat($$,$1); }
 %%
 
 int main() {
+
   yyparse();
 }
 
