@@ -1,10 +1,11 @@
                         /* Gabriel Gomez Tellez*/
-                    /*Date of creation June/3rd/2017*/
+                    /*Date of creation: June/3rd/2017*/
 
 /*************************Declaration of libraries********************/
 %{
 #include <string.h>
 #include <stdlib.h>
+#include "parser.tab.h"
 char* cadenaSinComillas(char* cadena){
 	char* nuevaCadena = (char*)malloc(strlen(cadena));
 	int contador = 0;
@@ -32,26 +33,26 @@ EOE ;
 %%
 {WholeNumber}           {
     		          printf("\tWhole number %s\n",yytext);
-                  //yylval.entero = atoi(yytext);
-                  //return (ENTERO);
+                  yylval.whole = atoi(yytext);
+                  return (WHOLE);
                         }
 
 {DecimalNumber}          {
 		printf("\tDecimal Number %s\n",yytext);
-							//yylval.real = atof(yytext);
-							//return (REAL);
+							yylval.decimal = atof(yytext);
+							return (DECIMAL);
               	}
-                
+
 {Variable}			{
 		printf("\tVariable %s\n",yytext);
-								//yylval.text = yytext;
-								//return (TEXTO);
+								yylval.string = yytext;
+								return (STRING);
 								}
 
 {String}						{
 		printf("\tString %s\n",cadenaSinComillas(yytext));
-							//yylval.text = cadenaSinComillas(yytext);
-							//return (TEXTO);
+							yylval.string = cadenaSinComillas(yytext);
+							return (STRING);
 								}
 
 "+"	 	{
