@@ -25,12 +25,16 @@ WholeNumber -?[0-9]+
 DecimalNumber -?[0-9]+"."[0-9]+
 Variable _?[a-zA-Z][a-zA-Z0-9_]*
 String \"[,.?¿!¡_:0-9a-zA-Z ]+\"
-EOE ;
-
 
 /*************************Rule definitions********************/
 
 %%
+"int"               {
+            printf("\treserved word: int\n");
+            yylval.string = yytext;
+            return (INT);
+                  }
+
 {WholeNumber}           {
     		          printf("\tWhole number %s\n",yytext);
                   yylval.whole = atoi(yytext);
@@ -46,7 +50,7 @@ EOE ;
 {Variable}			{
 		printf("\tVariable %s\n",yytext);
 								yylval.string = yytext;
-								return (STRING);
+								return (VARIABLE);
 								}
 
 {String}						{
@@ -79,7 +83,7 @@ EOE ;
 		printf("\tSalto de linea\n");
                 return (yytext[0]);
                 }
-{EOE}           {
+";"           {
 		printf("\tEnd of expressions symbol\n");
                 return (yytext[0]);
                 }

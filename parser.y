@@ -23,10 +23,13 @@
 %token <whole> WHOLE
 %token <decimal> DECIMAL
 %token <string> STRING
-
+%token <string> VARIABLE
+%token INT
 /**********************************************************************/
 /*********************Declaration of Non-Terminals*********************/
 /**********************************************************************/
+%type <whole> DCLRW
+
 %type <whole> expENT
 %type <decimal> expRE
 %type <string> expTXT
@@ -34,8 +37,9 @@
 %left '+' '-'
 %left '*' '/'
 
-
-/*********************************GRAMMAR*****************************/
+/**********************************************************************/
+/*********************************GRAMMAR******************************/
+/**********************************************************************/
 %%
 
 input:    /* empty string */
@@ -46,6 +50,10 @@ line:     '\n'
         | expENT '\n'  { printf ("\t\tresultado: %d\n", $1); }
         | expRE '\n'  { printf ("\t\tresultado: %f\n", $1); }
         | expTXT '\n'  { printf ("\t\tresultado: %s\n", $1); }
+        | DCLRW '\n'  {}
+;
+
+DCLRW:  INT VARIABLE ';' {printf("this is a declaration");}
 ;
 
 expENT:     WHOLE	{ $$ = $1; }
