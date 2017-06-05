@@ -13,7 +13,7 @@
 /**********************************************************************/
 %union{
 	int whole;
-  float decimal;
+  double decimal;
   char* string;
 }
 
@@ -25,11 +25,14 @@
 %token <string> STRING
 %token <string> VARIABLE
 %token INT
+%token DOUBLE
+%token STR
 /**********************************************************************/
 /*********************Declaration of Non-Terminals*********************/
 /**********************************************************************/
 %type <whole> DCLRW
-
+%type <decimal> DCLRD
+%type <string> DCLRS
 %type <whole> expENT
 %type <decimal> expRE
 %type <string> expTXT
@@ -51,9 +54,16 @@ line:     '\n'
         | expRE '\n'  { printf ("\t\tresultado: %f\n", $1); }
         | expTXT '\n'  { printf ("\t\tresultado: %s\n", $1); }
         | DCLRW '\n'  {}
+        | DCLRD '\n' {}
+        | DCLRS '\n'  {}
 ;
 
-DCLRW:  INT VARIABLE ';' {printf("this is a declaration");}
+DCLRS: STR VARIABLE ';' {printf("\tThis is a DCLRS\n");}
+;
+
+DCLRD: DOUBLE VARIABLE ';'{printf("\tthis is a DCLRD\n");}
+;
+DCLRW:  INT VARIABLE ';' {printf("\tthis is a declaration\n");}
 ;
 
 expENT:     WHOLE	{ $$ = $1; }

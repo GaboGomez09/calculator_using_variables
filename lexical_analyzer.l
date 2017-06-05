@@ -26,9 +26,21 @@ DecimalNumber -?[0-9]+"."[0-9]+
 Variable _?[a-zA-Z][a-zA-Z0-9_]*
 String \"[,.?¿!¡_:0-9a-zA-Z ]+\"
 
-/*************************Rule definitions********************/
+/*************************Rule definitions**************************/
 
 %%
+"string"          {
+            printf("\treserved word: string\n");
+            yylval.string = yytext;
+            return (STR);
+                  }
+
+"double"            {
+            printf("\treserved word: double\n");
+            yylval.string = yytext;
+            return (DOUBLE);
+                    }
+
 "int"               {
             printf("\treserved word: int\n");
             yylval.string = yytext;
@@ -43,7 +55,7 @@ String \"[,.?¿!¡_:0-9a-zA-Z ]+\"
 
 {DecimalNumber}          {
 		printf("\tDecimal Number %s\n",yytext);
-							yylval.decimal = atof(yytext);
+              sscanf(yytext, "%lf", &(yylval.decimal));
 							return (DECIMAL);
               	}
 
