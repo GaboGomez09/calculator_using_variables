@@ -74,7 +74,7 @@ INIT: INT VARIABLE '=' WHOLEXPR ';' {
                                     }
   | DOUBLE VARIABLE '=' DECEXPR ';' {
                                     union value value;
-                                    value.dvalue = 0;
+                                    value.dvalue = $4;
                                     save_variable(first_substring($2) , 2,value, symbol_table);
                                     }
   | STR VARIABLE '=' STREXPR ';'    {
@@ -82,6 +82,28 @@ INIT: INT VARIABLE '=' WHOLEXPR ';' {
                                     value.svalue = (char*)malloc(strlen($4));
                                     strcpy(value.svalue, $4);
                                     save_variable(first_substring($2) , 3,value, symbol_table);
+                                    }
+  |INT VARIABLE '=' DECEXPR ';'     {
+                                    union value value;
+                                    value.ivalue = (int)$4;
+                                    save_variable(first_substring($2) , 1,value, symbol_table);
+                                    }
+  | DOUBLE VARIABLE '=' WHOLEXPR ';'{
+                                    union value value;
+                                    value.dvalue = (double)$4;
+                                    save_variable(first_substring($2) , 2,value, symbol_table);
+                                    }
+  | STR VARIABLE '=' DECEXPR ';'    {
+                                    printf("\tError: Tipos de datos incompatible\n");
+                                    }
+  |INT VARIABLE '=' STREXPR ';'     {
+                                    printf("\tError: Tipos de datos incompatible\n");
+                                    }
+  | DOUBLE VARIABLE '=' STREXPR ';' {
+                                    printf("\tError: Tipos de datos incompatible\n");
+                                    }
+  | STR VARIABLE '=' WHOLEXPR ';'   {
+                                    printf("\tError: Tipos de datos incompatible\n");
                                     }
 ;
 
