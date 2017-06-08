@@ -38,6 +38,7 @@ char* string;
 %type <whole> WHOLEXPR
 %type <decimal> DECEXPR
 %type <string> STREXPR
+%type <string> PRINTEXP
 
 %left '+' '-'
 %left '*' '/'
@@ -58,6 +59,7 @@ line:     '\n'
       | INIT  '\n'  {}
       | DCLR  '\n'  {}
       | ASSIGN '\n' {}
+      | PRINTEXP '\n' {}
 ;
 
 ASSIGN: VARIABLE '=' WHOLEXPR ';' {}
@@ -101,6 +103,25 @@ DCLR: INT VARIABLE ';'  {
                         save_variable(first_substring($2) , 3,value, symbol_table);
                         }
 ;
+
+PRINTEXP: PRINT VARIABLE   {
+                            Tuple *tuple = obtain_tuple($2, symbol_table);
+                            if(tuple == NULL){
+                              printf("\tError 404: Variable not found.\n");
+                            }else{
+                              switch(tuple->type){
+                                case 1:
+                                  printf("\t%s: %d\n", $2, tuple->value.ivalue);
+                                  break;
+                                case 2:
+                                  printf("\t%s: %f\n", $2, tuple->value.dvalue);
+                                  break;
+                                case 3:
+                                  printf("\t%s: %s\n", $2, tuple->value.svalue);
+                                  break;
+                              }
+                            }
+                           }
 
 WHOLEXPR:     WHOLE	{ $$ = $1; }
 | WHOLEXPR '+' WHOLEXPR        { $$ = $1 + $3;}
