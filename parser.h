@@ -1,7 +1,10 @@
 #ifndef parser
 #define parser
 
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 #include "symbol_table.h"
 
 char* first_substring(char* string){

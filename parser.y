@@ -1,4 +1,4 @@
-/* Gabriel Gomez Tellez*/
+                    /* Gabriel Gomez Tellez*/
                 /*Date of creation: June/4th/2017*/
 
 /**********************************************************************/
@@ -6,9 +6,7 @@
 /**********************************************************************/
 %{
 #include "parser.h"
-Symbol_Table symbol_table = (Symbol_Table*)malloc(sizeof(Symbol_Table));
-symbol_table->next = NULL;
-symbol_table->length = 0;
+Symbol_Table *symbol_table;
 %}
 
 /**********************************************************************/
@@ -27,6 +25,7 @@ char* string;
 %token <decimal> DECIMAL
 %token <string> STRING
 %token <string> VARIABLE
+%token PRINT
 %token INT
 %token DOUBLE
 %token STR
@@ -49,7 +48,7 @@ char* string;
 %%
 
 input:    /* empty string */
-      | input line {printf("this did something");}
+      | input line {}
 ;
 
 line:     '\n'
@@ -72,11 +71,18 @@ INIT: INT VARIABLE '=' WHOLEXPR ';' {}
 ;
 
 
-DCLR: INT VARIABLE ';' {}//union value value;
-                      //value.ivalue = 0;
-        //save_variable(first_substring(name($2)) ,type(1),value);}
-  | DOUBLE VARIABLE ';' {}
-  | STR VARIABLE ';' {}
+DCLR: INT VARIABLE ';' {
+                      union value value;
+                      value.ivalue = 0;
+                      save_variable(first_substring($2) , 1,value, symbol_table);
+                        }
+  | DOUBLE VARIABLE ';' {union value value;
+                        value.dvalue = 0.0;
+          save_variable(first_substring($2) , 2,value, symbol_table);}
+  | STR VARIABLE ';' {union value value;
+                      value.svalue = (char*)malloc(1);
+                      value.svalue[0] = '\0';
+          save_variable(first_substring($2) , 3,value, symbol_table);}
 ;
 
 WHOLEXPR:     WHOLE	{ $$ = $1; }
@@ -119,7 +125,9 @@ STREXPR:     STRING	{ $$ = (char*)malloc(strlen($1));strcat($$,$1); }
 %%
 
 int main() {
-
+symbol_table = (Symbol_Table*)malloc(sizeof(Symbol_Table));
+symbol_table->head = NULL;
+symbol_table->length = 0;
 yyparse();
 }
 
