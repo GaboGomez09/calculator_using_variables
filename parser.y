@@ -65,24 +65,41 @@ ASSIGN: VARIABLE '=' WHOLEXPR ';' {}
     | VARIABLE '=' STREXPR ';' {printf("\t$1: %s, $3: %s\n", $1, $3);}
 ;
 
-INIT: INT VARIABLE '=' WHOLEXPR ';' {}
-  | DOUBLE VARIABLE '=' DECEXPR ';'{}
-  | STR VARIABLE '=' STREXPR ';' {}
+INIT: INT VARIABLE '=' WHOLEXPR ';' {
+                                    union value value;
+                                    value.ivalue = $4;
+                                    save_variable(first_substring($2) , 1,value, symbol_table);
+                                    }
+  | DOUBLE VARIABLE '=' DECEXPR ';' {
+                                    union value value;
+                                    value.dvalue = 0;
+                                    save_variable(first_substring($2) , 2,value, symbol_table);
+                                    }
+  | STR VARIABLE '=' STREXPR ';'    {
+                                    union value value;
+                                    value.svalue = (char*)malloc(strlen($4));
+                                    strcpy(value.svalue, $4);
+                                    save_variable(first_substring($2) , 3,value, symbol_table);
+                                    }
 ;
 
 
-DCLR: INT VARIABLE ';' {
-                      union value value;
-                      value.ivalue = 0;
-                      save_variable(first_substring($2) , 1,value, symbol_table);
+DCLR: INT VARIABLE ';'  {
+                        union value value;
+                        value.ivalue = 0;
+                        save_variable(first_substring($2) , 1,value, symbol_table);
                         }
-  | DOUBLE VARIABLE ';' {union value value;
+  | DOUBLE VARIABLE ';' {
+                        union value value;
                         value.dvalue = 0.0;
-          save_variable(first_substring($2) , 2,value, symbol_table);}
-  | STR VARIABLE ';' {union value value;
-                      value.svalue = (char*)malloc(1);
-                      value.svalue[0] = '\0';
-          save_variable(first_substring($2) , 3,value, symbol_table);}
+                        save_variable(first_substring($2) , 2,value, symbol_table);
+                        }
+  | STR VARIABLE ';'    {
+                        union value value;
+                        value.svalue = (char*)malloc(1);
+                        value.svalue[0] = '\0';
+                        save_variable(first_substring($2) , 3,value, symbol_table);
+                        }
 ;
 
 WHOLEXPR:     WHOLE	{ $$ = $1; }
