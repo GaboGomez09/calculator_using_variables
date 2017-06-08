@@ -13,17 +13,17 @@
 char* first_substring(char* string){
   int first_string_length = 0;
   for (first_string_length = 0; first_string_length < strlen(string); first_string_length++) {
-    if (isblank(string[first_string_length])) {
+    if (isblank(string[first_string_length]) || isspace(string[first_string_length] || '\n')) {
       break;
     }
   }
-  char* first_string = (char*)malloc(first_string_length+1);
+  char* first_string = (char*)malloc(first_string_length);
   for (first_string_length = 0; first_string_length < strlen(string); first_string_length++) {
     if (isblank(string[first_string_length])) {
       break;
-    }else{
-      first_string[first_string_length] = string[first_string_length];
     }
+    first_string[first_string_length] = string[first_string_length];
+
   }
   first_string[first_string_length+1] = '\0';
 

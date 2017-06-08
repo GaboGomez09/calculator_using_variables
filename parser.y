@@ -39,7 +39,7 @@ char* string;
 %type <decimal> DECEXPR
 %type <string> STREXPR
 %type <string> PRINTEXP
-
+%type <string> VAREXPR
 %left '+' '-'
 %left '*' '/'
 
@@ -56,6 +56,7 @@ line:     '\n'
       | WHOLEXPR '\n'  { printf ("\t\tresultado: %d\n", $1); }
       | DECEXPR '\n'  { printf ("\t\tresultado: %f\n", $1); }
       | STREXPR '\n'  { printf ("\t\tresultado: %s\n", $1); }
+      | VAREXPR '\n'  {printf("\tresultado: %s\n", subtract_string(subtract_string(subtract_string($1, "type1"), "type2"), "type3"));}
       | INIT  '\n'  {}
       | DCLR  '\n'  {}
       | ASSIGN '\n' {}
@@ -144,13 +145,305 @@ PRINTEXP: PRINT VARIABLE   {
                               }
                             }
                            }
+;
+
+VAREXPR:  VARIABLE	{
+                      Tuple *tuple = obtain_tuple(subtract_string($1, "\n") , symbol_table);
+                      if(tuple == NULL){
+                        printf("\tError 404: Variable not found.\n");
+                      }else{
+                        switch(tuple->type){
+                          case 1:
+                            sprintf($$, "%d", tuple->value.ivalue);
+                            strcat($$, "type1");
+                            break;
+                          case 2:
+                            sprintf($$, "%0.7f", tuple->value.dvalue);
+                            strcat($$, "type2");
+                            break;
+                          case 3:
+                            strcpy($$, tuple->value.svalue);
+                            strcat($$, "type3");
+                            break;
+                        }
+                      }
+                     }
+| VAREXPR '+' VAREXPR        {
+                                Tuple *tuple1 = obtain_tuple(subtract_string(subtract_string(subtract_string(subtract_string($1, "type1"), "type2"), "type3"),"\n") , symbol_table);
+                                Tuple *tuple2 = obtain_tuple(subtract_string(subtract_string(subtract_string(subtract_string($3, "type1"), "type2"), "type3"),"\n") , symbol_table);
+
+                                if(tuple1 == NULL || tuple2 == NULL){
+                                  printf("\tError 404: Variable not found.\n");
+                                }else{
+                                  switch(tuple1->type){
+                                    case 1:
+                                      switch(tuple2->type){
+                                        case 1:
+                                          sprintf($$, "%d", tuple1->value.ivalue + tuple2->value.ivalue);
+                                          strcat($$, "type1");
+                                          break;
+                                        case 2:
+                                          sprintf($$, "%0.7f", (double)tuple1->value.ivalue + tuple2->value.dvalue);
+                                          strcat($$, "type2");
+                                          break;
+                                        case 3:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                      }
+                                    case 2:
+                                      switch(tuple2->type){
+                                        case 1:
+                                          sprintf($$, "%0.7f", (double)tuple1->value.ivalue + tuple2->value.dvalue);
+                                          strcat($$, "type2");
+                                          break;
+                                        case 2:
+                                          sprintf($$, "%0.7f", tuple1->value.dvalue + tuple2->value.dvalue);
+                                          strcat($$, "type2");
+                                          break;
+                                        case 3:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                      }
+                                    case 3:
+                                      switch(tuple2->type){
+                                        case 1:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                        case 2:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                        case 3:
+                                          $$ = (char*)malloc(strlen(tuple1->value.svalue)+strlen(tuple2->value.svalue));
+                                          strcat($$,tuple1->value.svalue); strcat($$,tuple2->value.svalue);
+                                          strcat($$, "type3");
+                                          break;
+                                      }
+                                  }
+                                }
+                               }
+| VAREXPR '-' VAREXPR        {
+                                Tuple *tuple1 = obtain_tuple(subtract_string(subtract_string(subtract_string(subtract_string($1, "type1"), "type2"), "type3"),"\n") , symbol_table);
+                                Tuple *tuple2 = obtain_tuple(subtract_string(subtract_string(subtract_string(subtract_string($3, "type1"), "type2"), "type3"),"\n") , symbol_table);
+
+                                if(tuple1 == NULL || tuple2 == NULL){
+                                  printf("\tError 404: Variable not found.\n");
+                                }else{
+                                  switch(tuple1->type){
+                                    case 1:
+                                      switch(tuple2->type){
+                                        case 1:
+                                          sprintf($$, "%d", tuple1->value.ivalue - tuple2->value.ivalue);
+                                          strcat($$, "type1");
+                                          break;
+                                        case 2:
+                                          sprintf($$, "%0.7f", (double)tuple1->value.ivalue - tuple2->value.dvalue);
+                                          strcat($$, "type2");
+                                          break;
+                                        case 3:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                      }
+                                    case 2:
+                                      switch(tuple2->type){
+                                        case 1:
+                                          sprintf($$, "%0.7f", (double)tuple1->value.ivalue - tuple2->value.dvalue);
+                                          strcat($$, "type2");
+                                          break;
+                                        case 2:
+                                          sprintf($$, "%0.7f", tuple1->value.dvalue - tuple2->value.dvalue);
+                                          strcat($$, "type2");
+                                          break;
+                                        case 3:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                      }
+                                    case 3:
+                                      switch(tuple2->type){
+                                        case 1:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                        case 2:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                        case 3:
+                                          $$ = subtract_string(tuple1->value.svalue, tuple2->value.svalue);
+                                          strcat($$, "type3");
+                                          break;
+                                      }
+                                  }
+                                }
+                               }
+| VAREXPR '*' VAREXPR        {
+                                Tuple *tuple1 = obtain_tuple(subtract_string(subtract_string(subtract_string(subtract_string($1, "type1"), "type2"), "type3"),"\n") , symbol_table);
+                                Tuple *tuple2 = obtain_tuple(subtract_string(subtract_string(subtract_string(subtract_string($3, "type1"), "type2"), "type3"),"\n") , symbol_table);
+
+                                if(tuple1 == NULL || tuple2 == NULL){
+                                  printf("\tError 404: Variable not found.\n");
+                                }else{
+                                  switch(tuple1->type){
+                                    case 1:
+                                      switch(tuple2->type){
+                                        case 1:
+                                          sprintf($$, "%d", tuple1->value.ivalue * tuple2->value.ivalue);
+                                          strcat($$, "type1");
+                                          break;
+                                        case 2:
+                                          sprintf($$, "%0.7f", (double)tuple1->value.ivalue * tuple2->value.dvalue);
+                                          strcat($$, "type2");
+                                          break;
+                                        case 3:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                      }
+                                    case 2:
+                                      switch(tuple2->type){
+                                        case 1:
+                                          sprintf($$, "%0.7f", (double)tuple1->value.ivalue * tuple2->value.dvalue);
+                                          strcat($$, "type2");
+                                          break;
+                                        case 2:
+                                          sprintf($$, "%0.7f", tuple1->value.dvalue * tuple2->value.dvalue);
+                                          strcat($$, "type2");
+                                          break;
+                                        case 3:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                      }
+                                    case 3:
+                                      switch(tuple2->type){
+                                        case 1:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                        case 2:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                        case 3:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                      }
+                                  }
+                                }
+                               }
+| VAREXPR '/' VAREXPR        {
+                                Tuple *tuple1 = obtain_tuple(subtract_string(subtract_string(subtract_string(subtract_string($1, "type1"), "type2"), "type3"),"\n") , symbol_table);
+                                Tuple *tuple2 = obtain_tuple(subtract_string(subtract_string(subtract_string(subtract_string($3, "type1"), "type2"), "type3"),"\n") , symbol_table);
+
+                                if(tuple1 == NULL || tuple2 == NULL){
+                                  printf("\tError 404: Variable not found.\n");
+                                }else{
+                                  switch(tuple1->type){
+                                    case 1:
+                                      switch(tuple2->type){
+                                        case 1:
+                                          sprintf($$, "%d", tuple1->value.ivalue / tuple2->value.ivalue);
+                                          strcat($$, "type1");
+                                          break;
+                                        case 2:
+                                          sprintf($$, "%0.7f", (double)tuple1->value.ivalue / tuple2->value.dvalue);
+                                          strcat($$, "type2");
+                                          break;
+                                        case 3:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                      }
+                                    case 2:
+                                      switch(tuple2->type){
+                                        case 1:
+                                          sprintf($$, "%0.7f", (double)tuple1->value.ivalue / tuple2->value.dvalue);
+                                          strcat($$, "type2");
+                                          break;
+                                        case 2:
+                                          sprintf($$, "%0.7f", tuple1->value.dvalue / tuple2->value.dvalue);
+                                          strcat($$, "type2");
+                                          break;
+                                        case 3:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                      }
+                                    case 3:
+                                      switch(tuple2->type){
+                                        case 1:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                        case 2:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                        case 3:
+                                          $$ = (char*)malloc(sizeof(char)*6);
+                                          strcat($$, "ERROR");
+                                          printf("\tError: Tipos de datos incompatible\n");
+                                          break;
+                                      }
+                                  }
+                                }
+                               }
+| VAREXPR '+' WHOLEXPR        { }
+| VAREXPR '-' WHOLEXPR        { }
+| VAREXPR '*' WHOLEXPR        { }
+| VAREXPR '/' WHOLEXPR        { }
+| WHOLEXPR '+' VAREXPR        { }
+| WHOLEXPR '-' VAREXPR        { }
+| WHOLEXPR '*' VAREXPR        { }
+| WHOLEXPR '/' VAREXPR        { }
+| VAREXPR '+' DECEXPR        { }
+| VAREXPR '-' DECEXPR        { }
+| VAREXPR '*' DECEXPR        { }
+| VAREXPR '/' DECEXPR        { }
+| DECEXPR '+' VAREXPR        { }
+| DECEXPR '-' VAREXPR        { }
+| DECEXPR '*' VAREXPR        { }
+| DECEXPR '/' VAREXPR        { }
+| VAREXPR '+' STREXPR        { }
+| VAREXPR '-' STREXPR        { }
+| VAREXPR '*' STREXPR        { }
+| VAREXPR '/' STREXPR        { }
+| STREXPR '+' VAREXPR        { }
+| STREXPR '-' VAREXPR        { }
+| STREXPR '*' VAREXPR        { }
+| STREXPR '/' VAREXPR        { }
+| '-' VAREXPR {}
+;
 
 WHOLEXPR:     WHOLE	{ $$ = $1; }
 | WHOLEXPR '+' WHOLEXPR        { $$ = $1 + $3;}
 | WHOLEXPR '-' WHOLEXPR        { $$ = $1 - $3;}
 | WHOLEXPR '*' WHOLEXPR        { $$ = $1 * $3;}
 | WHOLEXPR '/' WHOLEXPR        { $$ = $1 / $3;}
-|'-' WHOLEXPR { $$ = -1*$2;}
+| '-' WHOLEXPR { $$ = -1*$2;}
 ;
 
 DECEXPR:     DECIMAL	{ $$ = $1; }
@@ -166,15 +459,14 @@ DECEXPR:     DECIMAL	{ $$ = $1; }
 | DECEXPR '-' DECEXPR        { $$ = $1 - $3;}
 | DECEXPR '*' DECEXPR        { $$ = $1 * $3;}
 | DECEXPR '/' DECEXPR       { $$ = $1 / $3;}
-|'-' DECEXPR { $$ = -1*$2;}
-
+| '-' DECEXPR { $$ = -1*$2;}
 ;
 
 STREXPR:     STRING	{ $$ = (char*)malloc(strlen($1));strcat($$,$1); }
 | STREXPR '+' STREXPR  {
                         $$ = (char*)malloc(strlen($1)+strlen($3));
                         strcat($$,$1); strcat($$,$3);
-                        printf("\t$1: %s, $3: %s\n", $1, $3);    }
+                         }
 | STREXPR '-' STREXPR {
                         $$ = subtract_string($1,$3);
 }
