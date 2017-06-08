@@ -7,6 +7,9 @@
 #include <string.h>
 #include "symbol_table.h"
 
+#define TRUE 1
+#define FALSE 0
+
 char* first_substring(char* string){
   int first_string_length = 0;
   for (first_string_length = 0; first_string_length < strlen(string); first_string_length++) {
@@ -28,9 +31,24 @@ char* first_substring(char* string){
 
 }
 
+int variable_exists(char* variable_name, Symbol_Table *st){
+  Tuple *pointer = st->head;
+  while (pointer) {
+    if (!strcmp(variable_name, pointer->name)) {
+      return TRUE;
+    }
+    pointer = pointer->next;
+  }
+  return FALSE;
+}
+
 void save_variable(char* variable_name ,int type,union value value, Symbol_Table *st){
-  Tuple* new_tuple = create_tuple(variable_name, type, value);
-  insert_tuple(st, new_tuple);
+  if (variable_exists(variable_name, st)) {
+    printf("\t%s\n", "Error: Variable already exists");
+  }else{
+    Tuple* new_tuple = create_tuple(variable_name, type, value);
+    insert_tuple(st, new_tuple);
+  }
 }
 
 
