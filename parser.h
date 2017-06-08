@@ -1,18 +1,34 @@
 #ifndef parser
 #define parser
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
+
 #include "symbol_table.h"
 
-// char* first_substring(char* string){
-//
-// }
-//
-// void save_variable(first_substring(name($2)) ,int type,union value value){
-//
-// }
+char* first_substring(char* string){
+  int first_string_length = 0;
+  for (first_string_length = 0; first_string_length < strlen(string); first_string_length++) {
+    if (isblank(string[first_string_length])) {
+      break;
+    }
+  }
+  char* first_string = (char*)malloc(first_string_length+1);
+  for (first_string_length = 0; first_string_length < strlen(string); first_string_length++) {
+    if (isblank(string[first_string_length])) {
+      break;
+    }else{
+      first_string[first_string_length] = string[first_string_length];
+    }
+  }
+  first_string[first_string_length+1] = '\0';
+
+  return first_string;
+
+}
+
+void save_variable(char* variable_name ,int type,union value value, Symbol_Table *st){
+  Tuple* new_tuple = create_tuple(variable_name, type, value);
+  insert_tuple(st, new_tuple);
+}
 
 
 char* subtract_string(char* string1, char* string2)

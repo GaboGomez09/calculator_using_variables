@@ -1,20 +1,23 @@
-#ifndef symbol_table
-#define symbol_table
+#ifndef symbol_table_h
+#define symbol_table_h
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-typedef struct tuple{
+typedef struct Tuple{
     char* name;
     int type; //1 = int, 2 = double and 3 = string
     union value{
         int ivalue;
-        float dvalue;
+        double dvalue;
         char* svalue;
     }value;
-    struct tuple* next;
+    struct Tuple* next;
 }Tuple;
 
 
-typedef struct symbol_table{
+typedef struct Symbol_Table{
   Tuple* head;
   int length;
 }Symbol_Table;
@@ -40,32 +43,30 @@ Tuple* create_tuple(char* name ,int type ,union value value){
       printf("%s\n", "Invalid type.\n");
       break;
   }
+  return tuple;
 }
 
-void destroy_tuple(Tuple *tuple){
-  free(tuple);
-}
 
-void insert_tuple(Symbol_Table *symbol_table, Tuple *tuple){
-  if (symbol_table->head == NULL) {
-    symbol_table->head = tuple;
+void insert_tuple(Symbol_Table *st, Tuple *tuple){
+  if (st->head == NULL) {
+    st->head = tuple;
   }else{
-    Tuple *pointer = symbol_table->head;
+    Tuple *pointer = st->head;
     while (pointer->next) {
       pointer = pointer->next;
     }
     pointer->next = tuple;
   }
-  symbol_table->length++;
+  st->length++;
 }
 
-Tuple* obtain_tuple(char* variable_name, Symbol_Table *symbol_table){
-  if (symbol_table->head == NULL) {
+Tuple* obtain_tuple(char* var, Symbol_Table *st){
+  if (st->head == NULL) {
     return NULL;
   }else{
-    Tuple* pointer = symbol_table->head;
+    Tuple* pointer = st->head;
     while (pointer) {
-      if (!strcmp(variable_name, pointer->name)) {
+      if (!strcmp(var, pointer->name)) {
         return pointer;
       }
       pointer = pointer->next;
@@ -74,6 +75,7 @@ Tuple* obtain_tuple(char* variable_name, Symbol_Table *symbol_table){
   }
 }
 
+
 // int main(int argc, char const *argv[]) {
 //   char* name = "var1";
 //   int type = 1;
@@ -81,10 +83,10 @@ Tuple* obtain_tuple(char* variable_name, Symbol_Table *symbol_table){
 //   value.ivalue = 3;
 //
 //   Tuple *tuple = create_tuple(name, type, value);
-//   Symbol_Table *symbol_table = (Symbol_Table*)malloc(sizeof(Symbol_Table));
-//   symbol_table->head = NULL;
-//   symbol_table->length = 0;
-//   insert_tuple(symbol_table, tuple);
+//   Symbol_Table *st = (Symbol_Table*)malloc(sizeof(Symbol_Table));
+//   st->head = NULL;
+//   st->length = 0;
+//   insert_tuple(st, tuple);
 //
 //   char* name2 = "var2";
 //   int type2 = 2;
@@ -93,9 +95,9 @@ Tuple* obtain_tuple(char* variable_name, Symbol_Table *symbol_table){
 //
 //   Tuple *tuple2 = create_tuple(name2, type2, value2);
 //
-//   insert_tuple(symbol_table, tuple2);
+//   insert_tuple(st, tuple2);
 //
-//   if (obtain_tuple("var2", symbol_table)) {
+//   if (obtain_tuple("var2", st)) {
 //     printf("%s\n", "var2 exists");
 //   }
 //   return 0;

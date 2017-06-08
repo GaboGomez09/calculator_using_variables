@@ -29,6 +29,13 @@ String \"[,.?¿!¡_:0-9a-zA-Z ]+\"
 /*************************Rule definitions**************************/
 
 %%
+
+"print"       {
+            printf("\treserved word: print\n");
+            yylval.string = yytext;
+            return (PRINT);
+              }
+
 "string"          {
             printf("\treserved word: string\n");
             yylval.string = yytext;
