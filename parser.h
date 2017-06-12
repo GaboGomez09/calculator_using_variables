@@ -17,7 +17,7 @@ char* first_substring(char* string){
       break;
     }
   }
-  char* first_string = (char*)malloc(first_string_length);
+  char* first_string = (char*)malloc(10);
   for (first_string_length = 0; first_string_length < strlen(string); first_string_length++) {
     if (isblank(string[first_string_length])) {
       break;
@@ -61,7 +61,8 @@ char* subtract_string(char* string1, char* string2)
       match after its first encounter. It only subtracts the
       first instance found.
   */
-  for (counter = 0; counter < strlen(string1); counter++)
+  int length_string = strlen(string1);
+  for (counter = 0; counter < length_string; counter++)
   {
     counter2 = 0;
     /*
@@ -124,10 +125,10 @@ char* eliminate_last_char(char* string){
   return string;
 }
 
-char* operation_solver(char* first_expression, char* second expression, char operation){
-    int a,b;
-    double c,d;
-    char* expression_result;
+char* operation_solver(char* first_expression, char* second_expression, char operation){
+    int a = 0, b = 0;
+    double c = 0, d = 0;
+    char *expression_result = (char*)malloc(100);
     switch(first_expression[strlen(first_expression)-1]){
       case '1':
         switch(second_expression[strlen(second_expression)-1]){
@@ -138,62 +139,69 @@ char* operation_solver(char* first_expression, char* second expression, char ope
                 b = atoi(eliminate_last_char(second_expression));
                 sprintf(expression_result, "%d", a + b);
                 strcat(expression_result, "1");
+                return expression_result;
                 break;
               case '-':
                 a = atoi(eliminate_last_char(first_expression));
                 b = atoi(eliminate_last_char(second_expression));
                 sprintf(expression_result, "%d", a - b);
                 strcat(expression_result, "1");
+                return expression_result;
                 break;
               case '/':
                 a = atoi(eliminate_last_char(first_expression));
                 b = atoi(eliminate_last_char(second_expression));
                 sprintf(expression_result, "%d", a / b);
                 strcat(expression_result, "1");
+                return expression_result;
                 break;
               case '*':
                 a = atoi(eliminate_last_char(first_expression));
                 b = atoi(eliminate_last_char(second_expression));
                 sprintf(expression_result, "%d", a * b);
                 strcat(expression_result, "1");
+                return expression_result;
                 break;
             }
             break;
           case '2':
             switch (operation) {
               case '+':
+                a = atoi(eliminate_last_char(first_expression));
+                c = atof(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%0.7f", (double)a + c);
+                strcat(expression_result, "2");
+                return expression_result;
                 break;
               case '-':
+                a = atoi(eliminate_last_char(first_expression));
+                c = atof(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%0.7f", (double)a - c);
+                strcat(expression_result, "2");
+                return expression_result;
                 break;
               case '/':
+                a = atoi(eliminate_last_char(first_expression));
+                c = atof(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%0.7f", (double)a / c);
+                strcat(expression_result, "2");
+                return expression_result;
                 break;
               case '*':
+                a = atoi(eliminate_last_char(first_expression));
+                c = atof(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%0.7f", (double)a * c);
+                strcat(expression_result, "2");
+                return expression_result;
                 break;
             }
             break;
           case '3':
-            switch (operation) {
-              case '+':
-                break;
-              case '-':
-                break;
-              case '/':
-                break;
-              case '*':
-                break;
-            }
+            printf("\tError: Tipos de datos incompatible\n");
+            return "4";
             break;
           case '4':
-            switch (operation) {
-              case '+':
-                break;
-              case '-':
-                break;
-              case '/':
-                break;
-              case '*':
-                break;
-            }
+            return "4";
             break;
         }
         break;
@@ -202,156 +210,116 @@ char* operation_solver(char* first_expression, char* second expression, char ope
           case '1':
             switch (operation) {
               case '+':
+                c = atof(eliminate_last_char(first_expression));
+                a = atoi(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%0.7f", c + (double)a);
+                strcat(expression_result, "2");
+                return expression_result;
                 break;
               case '-':
+                c = atof(eliminate_last_char(first_expression));
+                a = atoi(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%0.7f", c - (double)a);
+                strcat(expression_result, "2");
+                return expression_result;
                 break;
               case '/':
+                c = atof(eliminate_last_char(first_expression));
+                a = atoi(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%0.7f", c / (double)a);
+                strcat(expression_result, "2");
+                return expression_result;
                 break;
               case '*':
+                c = atof(eliminate_last_char(first_expression));
+                a = atoi(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%0.7f", c * (double)a);
+                strcat(expression_result, "2");
+                return expression_result;
                 break;
             }
             break;
           case '2':
             switch (operation) {
               case '+':
+                c = atof(eliminate_last_char(first_expression));
+                d = atof(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%0.7f", c + d);
+                strcat(expression_result, "2");
+                return expression_result;
                 break;
               case '-':
+                c = atof(eliminate_last_char(first_expression));
+                d = atof(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%0.7f", c - d);
+                strcat(expression_result, "2");
+                return expression_result;
                 break;
               case '/':
+                c = atof(eliminate_last_char(first_expression));
+                d = atof(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%0.7f", c / d);
+                strcat(expression_result, "2");
+                return expression_result;
                 break;
               case '*':
+                c = atof(eliminate_last_char(first_expression));
+                d = atof(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%0.7f", c * d);
+                strcat(expression_result, "2");
+                return expression_result;
                 break;
             }
             break;
           case '3':
-            switch (operation) {
-              case '+':
-                break;
-              case '-':
-                break;
-              case '/':
-                break;
-              case '*':
-                break;
-            }
+            printf("\tError: Tipos de datos incompatible\n");
+            return "4";
             break;
           case '4':
-            switch (operation) {
-              case '+':
-                break;
-              case '-':
-                break;
-              case '/':
-                break;
-              case '*':
-                break;
-            }
+            return "4";
             break;
         }
         break;
       case '3':
         switch(second_expression[strlen(second_expression)-1]){
           case '1':
-            switch (operation) {
-              case '+':
-                break;
-              case '-':
-                break;
-              case '/':
-                break;
-              case '*':
-                break;
-            }
+            printf("\tError: Tipos de datos incompatible\n");
+            return "4";
             break;
           case '2':
-            switch (operation) {
-              case '+':
-                break;
-              case '-':
-                break;
-              case '/':
-                break;
-              case '*':
-                break;
-            }
+            printf("\tError: Tipos de datos incompatible\n");
+            return "4";
             break;
           case '3':
             switch (operation) {
               case '+':
+                strcat(expression_result, eliminate_last_char(first_expression));
+                strcat(expression_result, eliminate_last_char(second_expression));
+                strcat(expression_result, "3");
+                return expression_result;
                 break;
               case '-':
+                strcpy(expression_result, subtract_string(eliminate_last_char(first_expression), eliminate_last_char(second_expression)));
+                strcat(expression_result, "3");
+                return expression_result;
                 break;
               case '/':
+                printf("\tError: Operación inválida\n");
+                return "4";
                 break;
               case '*':
+                printf("\tError: Operación inválida\n");
+                return "4";
                 break;
             }
             break;
           case '4':
-            switch (operation) {
-              case '+':
-                break;
-              case '-':
-                break;
-              case '/':
-                break;
-              case '*':
-                break;
-            }
+            return "4";
             break;
         }
         break;
       case '4':
-        switch(second_expression[strlen(second_expression)-1]){
-          case '1':
-            switch (operation) {
-              case '+':
-                break;
-              case '-':
-                break;
-              case '/':
-                break;
-              case '*':
-                break;
-            }
-            break;
-          case '2':
-            switch (operation) {
-              case '+':
-                break;
-              case '-':
-                break;
-              case '/':
-                break;
-              case '*':
-                break;
-            }
-            break;
-          case '3':
-            switch (operation) {
-              case '+':
-                break;
-              case '-':
-                break;
-              case '/':
-                break;
-              case '*':
-                break;
-            }
-            break;
-          case '4':
-            switch (operation) {
-              case '+':
-                break;
-              case '-':
-                break;
-              case '/':
-                break;
-              case '*':
-                break;
-            }
-            break;
-        }
+        return "4";
         break;
     }
 }

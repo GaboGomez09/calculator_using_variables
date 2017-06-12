@@ -24,7 +24,7 @@ typedef struct Symbol_Table{
 
 Tuple* create_tuple(char* name ,int type ,union value value){
   Tuple* tuple = (Tuple*)malloc(sizeof(Tuple));
-  tuple->name = (char*)malloc(strlen(name));
+  tuple->name = (char*)malloc(10);
   strcpy(tuple->name, name);
   tuple->type = type;
   tuple->next = NULL;
