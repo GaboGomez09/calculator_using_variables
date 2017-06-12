@@ -119,4 +119,241 @@ char* subtract_string(char* string1, char* string2)
   }
 }
 
+char* eliminate_last_char(char* string){
+  string[strlen(string)-1] = '\0';
+  return string;
+}
+
+char* operation_solver(char* first_expression, char* second expression, char operation){
+    int a,b;
+    double c,d;
+    char* expression_result;
+    switch(first_expression[strlen(first_expression)-1]){
+      case '1':
+        switch(second_expression[strlen(second_expression)-1]){
+          case '1':
+            switch (operation) {
+              case '+':
+                a = atoi(eliminate_last_char(first_expression));
+                b = atoi(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%d", a + b);
+                strcat(expression_result, "1");
+                break;
+              case '-':
+                a = atoi(eliminate_last_char(first_expression));
+                b = atoi(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%d", a - b);
+                strcat(expression_result, "1");
+                break;
+              case '/':
+                a = atoi(eliminate_last_char(first_expression));
+                b = atoi(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%d", a / b);
+                strcat(expression_result, "1");
+                break;
+              case '*':
+                a = atoi(eliminate_last_char(first_expression));
+                b = atoi(eliminate_last_char(second_expression));
+                sprintf(expression_result, "%d", a * b);
+                strcat(expression_result, "1");
+                break;
+            }
+            break;
+          case '2':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+          case '3':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+          case '4':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+        }
+        break;
+      case '2':
+        switch(second_expression[strlen(second_expression)-1]){
+          case '1':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+          case '2':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+          case '3':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+          case '4':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+        }
+        break;
+      case '3':
+        switch(second_expression[strlen(second_expression)-1]){
+          case '1':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+          case '2':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+          case '3':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+          case '4':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+        }
+        break;
+      case '4':
+        switch(second_expression[strlen(second_expression)-1]){
+          case '1':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+          case '2':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+          case '3':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+          case '4':
+            switch (operation) {
+              case '+':
+                break;
+              case '-':
+                break;
+              case '/':
+                break;
+              case '*':
+                break;
+            }
+            break;
+        }
+        break;
+    }
+}
+
 #endif
