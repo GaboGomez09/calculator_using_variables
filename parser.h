@@ -120,10 +120,7 @@ char* subtract_string(char* string1, char* string2)
   }
 }
 
-char* eliminate_last_char(char* string){
-  string[strlen(string)-1] = '\0';
-  return string;
-}
+
 
 char* operation_solver(char* first_expression, char* second_expression, char operation){
     int a = 0, b = 0;

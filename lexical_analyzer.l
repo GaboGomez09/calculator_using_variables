@@ -30,85 +30,85 @@ String \"[,.?¿!¡_:0-9a-zA-Z ]+\"
 
 %%
 
-"print"       {
-            printf("\treserved word: print\n");
-            yylval.string = yytext;
-            return (PRINT);
-              }
+"print"         {
+                printf("\treserved word: print\n");
+                strcpy(yylval.string, yytext);
+                return (PRINT);
+                }
 
-"string"          {
-            printf("\treserved word: string\n");
-            yylval.string = yytext;
-            return (STR);
-                  }
+"string"        {
+                printf("\treserved word: string\n");
+                strcpy(yylval.string, yytext);
+                return (STR);
+                }
 
-"double"            {
-            printf("\treserved word: double\n");
-            yylval.string = yytext;
-            return (DOUBLE);
-                    }
+"double"        {
+                printf("\treserved word: double\n");
+                strcpy(yylval.string, yytext);
+                return (DOUBLE);
+                }
 
-"int"               {
-            printf("\treserved word: int\n");
-            yylval.string = yytext;
-            return (INT);
-                  }
+"int"           {
+                printf("\treserved word: int\n");
+                strcpy(yylval.string, yytext);
+                return (INT);
+                }
 
-{WholeNumber}           {
-    		          printf("\tWhole number %s\n",yytext);
-                  yylval.whole = atoi(yytext);
-                  return (WHOLE);
-                        }
+{WholeNumber}   {
+                printf("\tWhole number %s\n",yytext);
+                yylval.whole = atoi(yytext);
+                return (WHOLE);
+                }
 
-{DecimalNumber}          {
-		printf("\tDecimal Number %s\n",yytext);
-              sscanf(yytext, "%lf", &(yylval.decimal));
-							return (DECIMAL);
+{DecimalNumber} {
+            		printf("\tDecimal Number %s\n",yytext);
+                sscanf(yytext, "%lf", &(yylval.decimal));
+  							return (DECIMAL);
               	}
 
 {Variable}			{
-		printf("\tVariable %s\n",yytext);
-								yylval.string = yytext;
+            		printf("\tVariable %s\n",yytext);
+                strcpy(yylval.string, yytext);
 								return (VARIABLE);
 								}
 
-{String}						{
-		printf("\tString %s\n",cadenaSinComillas(yytext));
-							yylval.string = cadenaSinComillas(yytext);
-							return (STRING);
+{String}				{
+            		printf("\tString %s\n",cadenaSinComillas(yytext));
+                strcpy(yylval.string, cadenaSinComillas(yytext));
+  							return (STRING);
 								}
 
-"="	 	{
-		printf("\tSigno igual\n");
+"="	           	{
+		            printf("\tSigno igual\n");
                 return (yytext[0]);
                 }
 
-"+"	 	{
-		printf("\tSigno mas\n");
+"+"	           	{
+		            printf("\tSigno mas\n");
                 return (yytext[0]);
                 }
 
-"-"	 	{
-		printf("\tSigno menos\n");
+"-"	 	          {
+		            printf("\tSigno menos\n");
                 return (yytext[0]);
                 }
 
-"*"	 	{
-		printf("\tSigno producto\n");
-		          return (yytext[0]);
-          }
+"*"	           	{
+		            printf("\tSigno producto\n");
+		            return (yytext[0]);
+                }
 
-"/"	 	{
-		printf("\tSigno division\n");
+"/"	           	{
+		            printf("\tSigno division\n");
                 return (yytext[0]);
                 }
 
 "\n"            {
-		printf("\tSalto de linea\n");
+		            printf("\tSalto de linea\n");
                 return (yytext[0]);
                 }
-";"           {
-		printf("\tEnd of expressions symbol\n");
+";"             {
+		            printf("\tEnd of expressions symbol\n");
                 return (yytext[0]);
                 }
 .               ;

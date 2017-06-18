@@ -24,7 +24,7 @@ typedef struct Symbol_Table{
 
 Tuple* create_tuple(char* name ,int type ,union value value){
   Tuple* tuple = (Tuple*)malloc(sizeof(Tuple));
-  tuple->name = (char*)malloc(10);
+  tuple->name = (char*)malloc(20);
   strcpy(tuple->name, name);
   tuple->type = type;
   tuple->next = NULL;
@@ -74,7 +74,69 @@ Tuple* obtain_tuple(char* var, Symbol_Table *st){
     return NULL;
   }
 }
-
+char* eliminate_last_char(char* string){
+  string[strlen(string)-1] = '\0';
+  return string;
+}
+int change_value(char* var, char *value, Symbol_Table *st){
+  if (st->head == NULL) {
+    return 0;
+  }else{
+    Tuple* pointer = st->head;
+    while (pointer) {
+      if (!strcmp(var, pointer->name)) {
+        switch (pointer->type) {
+          case 1:
+            switch (value[strlen(value)-1]) {
+              case '1':
+                pointer->value.ivalue = atoi(eliminate_last_char(value));
+                return 1;
+                break;
+              case '2':
+                pointer->value.ivalue = (int)atof(eliminate_last_char(value));
+                return 1;
+                break;
+              default:
+                printf("%s\n", "Error.");
+                return 0;
+                break;
+            }
+            break;
+          case 2:
+            switch (value[strlen(value)-1]) {
+              case '1':
+                pointer->value.dvalue = (double)atoi(eliminate_last_char(value));
+                return 1;
+                break;
+              case '2':
+                pointer->value.dvalue = atof(eliminate_last_char(value));
+                return 1;
+                break;
+              default:
+                printf("%s\n", "Error.");
+                return 0;
+                break;
+            }
+            break;
+          case 3:
+            switch (value[strlen(value)-1]) {
+              case '3':
+                strcpy(pointer->value.svalue, eliminate_last_char(value));
+                return 1;
+                break;
+              default:
+                printf("%s\n", "Error.");
+                return 0;
+                break;
+            }
+            break;
+        }
+      }
+      pointer = pointer->next;
+    }
+    return 0;
+  }
+}
 
 // int main(int argc, char const *argv[]) {
 //   char* name = "var1";

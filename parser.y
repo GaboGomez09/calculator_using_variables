@@ -13,9 +13,17 @@ Symbol_Table *symbol_table;
 /*************************Declaration of Data Types********************/
 /**********************************************************************/
 %union{
-int whole;
-double decimal;
-char* string;
+  int whole;
+  double decimal;
+  char* string;
+  typedef struct{
+    int type; //1 = int, 2 = double and 3 = string
+    union value{
+        int ivalue;
+        double dvalue;
+        char* svalue;
+    }value;
+  }flex_type; //short for flexible type
 }
 
 /**********************************************************************/
