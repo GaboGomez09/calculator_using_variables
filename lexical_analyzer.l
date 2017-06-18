@@ -32,24 +32,28 @@ String \"[,.?¿!¡_:0-9a-zA-Z ]+\"
 
 "print"         {
                 printf("\treserved word: print\n");
+                yylval.string = (char*)malloc(sizeof(char)*6);
                 strcpy(yylval.string, yytext);
                 return (PRINT);
                 }
 
 "string"        {
                 printf("\treserved word: string\n");
+                yylval.string = (char*)malloc(sizeof(char)*7);
                 strcpy(yylval.string, yytext);
                 return (STR);
                 }
 
 "double"        {
                 printf("\treserved word: double\n");
+                yylval.string = (char*)malloc(sizeof(char)*7);
                 strcpy(yylval.string, yytext);
                 return (DOUBLE);
                 }
 
 "int"           {
                 printf("\treserved word: int\n");
+                yylval.string = (char*)malloc(sizeof(char)*4);
                 strcpy(yylval.string, yytext);
                 return (INT);
                 }
@@ -68,12 +72,14 @@ String \"[,.?¿!¡_:0-9a-zA-Z ]+\"
 
 {Variable}			{
             		printf("\tVariable %s\n",yytext);
+                yylval.string = (char*)malloc(sizeof(char)*strlen(yytext));
                 strcpy(yylval.string, yytext);
 								return (VARIABLE);
 								}
 
 {String}				{
             		printf("\tString %s\n",cadenaSinComillas(yytext));
+                yylval.string = (char*)malloc(sizeof(char)*strlen(yytext));
                 strcpy(yylval.string, cadenaSinComillas(yytext));
   							return (STRING);
 								}
